@@ -16,7 +16,33 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={'flex m-4'.concat(' ', inter.className)}>
+          <aside className='w-[274px] mr-[100px]'>
+              <ul>
+                <li>
+                  <div>
+                    Step1
+                  </div>
+                </li>
+                <li>
+                  <div>
+                    Step2
+                  </div>
+                </li>
+                <li>
+                  <div>
+                    Step3
+                  </div>
+                </li>
+                <li>
+                  <div>
+                    Step4
+                  </div>
+                </li>
+              </ul>
+          </aside>
+          {children}
+      </body>
     </html>
   );
 }
