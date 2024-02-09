@@ -1,5 +1,20 @@
+'use client';
+import {redirect} from "next/navigation";
+import React, {FormEvent, useState} from "react";
+import Link from "next/link";
+
 export default function Page() {
     const error = true;
+    const [fullName, setFullName] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [phoneNumber, setPhoneNumber] = useState<string>('');
+
+    const handleSubmit = (e: React.FormEvent) => {
+        localStorage.setItem('fullName', fullName);
+        localStorage.setItem('email', email);
+        localStorage.setItem('phoneNumber', phoneNumber);
+        redirect('/step2');
+    }
     return (
            <section className='flex flex-col gap-y-8 mt-10'>
                <hgroup className='flex flex-col gap-y-3'>
@@ -10,7 +25,7 @@ export default function Page() {
                        Please provide your name, email address, and phone number.
                    </p>
                </hgroup>
-               <form className='flex flex-col gap-y-6'>
+               <form onSubmit={handleSubmit} className='flex flex-col gap-y-6'>
                    <div className='flex flex-col gap-y-2'>
                        <label
                             className='text-denim'
@@ -22,6 +37,8 @@ export default function Page() {
                             name='name'
                             type='text'
                             placeholder='e.g. Stephen King'
+                            value={localStorage.getItem('fullName') || fullName}
+                            onChange={(e) => setFullName(e.target.value)}
                             className='border-borderColor p-2.5 text-denim font-medium border-2 rounded-md text-2xl'
                        />
                    </div>
@@ -34,8 +51,10 @@ export default function Page() {
                        </label>
                        <input
                             name='email'
-                            type='text'
+                            type='email'
                             placeholder='e.g. stephenking@lorem.com'
+                            value={localStorage.getItem('email') || email}
+                            onChange={(e) => setEmail(e.target.value)}
                             className='border-borderColor p-2.5 text-denim font-medium border-2 rounded-md text-2xl'
                        />
                    </div>
@@ -53,13 +72,19 @@ export default function Page() {
                             name='phone'
                             type='text'
                             placeholder='e.g. +1 234 567 890'
+                            value={localStorage.getItem('phoneNumber') || phoneNumber }
+                            onChange={(e) => setPhoneNumber(e.target.value)}
                             className={'p-2.5 text-denim font-medium border-2 rounded-md text-2xl'.concat(' ', error ? 'border-redErrors ' : 'border-borderColor ')}
                        />
                    </div>
                    <div className='flex flex-row-reverse'>
-                       <button className='bg-denim text-white border-none outline-none cursor-pointer font-medium px-2.5 py-4 rounded-md hover:bg-lightDenim ease-out duration-300'>
+                       <Link
+                           onClick={handleSubmit}
+                           href='../step2'
+                           className='bg-denim text-white border-none outline-none cursor-pointer font-medium px-2.5 py-4 rounded-md hover:bg-lightDenim ease-out duration-300'
+                       >
                            Next Step
-                       </button>
+                       </Link>
                    </div>
                </form>
            </section>
