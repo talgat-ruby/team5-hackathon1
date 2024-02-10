@@ -2,21 +2,26 @@
 import React, {useState} from "react";
 import Link from "next/link";
 import {redirect} from "next/navigation";
+import {periodType, planType, useFormStore} from "@/store/zustand";
 
 const addOns = new Map([['onlineService', 1], ['largerStorage', 2], ['customizableProfile', 2]]);
-const Page = () => {
-    const [onlineService, setOnlineService] = useState<boolean>(false);
-    const [largerStorage, setLargerStorage] = useState<boolean>(false);
-    const [customizableProfile, setCustomizableProfile] = useState<boolean>(false);
+export default function Step3() {
+    const form = useFormStore((state) => state.form);
+    const setForm = useFormStore((state) => state.setForm);
+    console.log(form, 'step3');
 
-    const handleSubmit = (e : React.FormEvent) => {
-        localStorage.setItem('onlineService', String(onlineService));
-        localStorage.setItem('onlineService_price', String(addOns.get('onlineService')));
-        localStorage.setItem('largerStorage', String(largerStorage));
-        localStorage.setItem('largerStorage_price', String(addOns.get('largerStorage')));
-        localStorage.setItem('customizableProfile', String(customizableProfile));
-        localStorage.setItem('customizableProfile_price', String(addOns.get('customizableProfile')));
-        console.log(onlineService, largerStorage, customizableProfile);
+    const handleSubmit = (formData : FormData) => {
+        setForm({
+            ...form,
+            addOns: {
+                ...form.addOns,
+                onlineService: Boolean(formData.get('onlineService')),
+                largerStorage: Boolean(formData.get('largerStorage')),
+                customizableProfile: Boolean(formData.get('customizableProfile'))
+
+            },
+        });
+        redirect('/step4');
     }
 
     return (
@@ -29,15 +34,14 @@ const Page = () => {
                     Add-ons help enhance your gaming experience.
                 </p>
             </hgroup>
-            <form>
+            <form action={handleSubmit}>
                 <section>
                     <label className='flex'>
                         <input
                             type='checkbox'
                             name='onlineService'
                             value='onlineService'
-                            checked={Boolean(localStorage.getItem('onlineService'))  || onlineService}
-                            onChange={(e) => setOnlineService(e.target.checked)}
+                            checked={Boolean(localStorage.getItem('onlineService'))  || undefined}
                         />
                         <hgroup>
                             <h5>Online service</h5>
@@ -52,8 +56,7 @@ const Page = () => {
                             type='checkbox'
                             name='largerStorage'
                             value='largerStorage'
-                            checked={Boolean(localStorage.getItem('largerStorage'))  || largerStorage}
-                            onChange={(e) => setLargerStorage(e.target.checked)}
+                            checked={Boolean(localStorage.getItem('largerStorage'))  || undefined}
                         />
                         <hgroup>
                             <h5>Larger storage</h5>
@@ -68,8 +71,7 @@ const Page = () => {
                             type='checkbox'
                             name='customizableProfile'
                             value='customizableProfile'
-                            checked={Boolean(localStorage.getItem('customizableProfile'))  || customizableProfile}
-                            onChange={(e) => setCustomizableProfile(e.target.checked)}
+                            checked={Boolean(localStorage.getItem('customizableProfile'))  || undefined}
                         />
                         <hgroup>
                             <h5>Customizable profile</h5>
@@ -82,11 +84,9 @@ const Page = () => {
                 </section>
                 <section>
                     <Link href='../step2'>Go Back</Link>
-                    <Link onClick={handleSubmit} href='../step4' type='submit'>Next Step</Link>
+                    <button type='submit'>Next Step</button>
                 </section>
             </form>
         </section>
     );
 };
-
-export default Page;

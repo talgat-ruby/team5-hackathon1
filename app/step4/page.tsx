@@ -1,8 +1,13 @@
 'use client'
 import Link from "next/link";
 import {redirect} from "next/navigation";
-
-const Page = () => {
+import {useFormStore} from "@/store/zustand";
+import {addonsMap, plansMap} from "@/lib/data";
+export default function Step4() {
+    const form = useFormStore((state) => state.form);
+    const setForm = useFormStore((state) => state.setForm);
+    const addOns = Object.keys(form.addOns).filter(key => form.addOns[key]);
+    const total = addOns.reduce((total, addOn) => total + (addonsMap.get(addOn) || 0), 0) + (plansMap.get(form.plan) || 0);
     const handleClick = () => {
         redirect('/confirm');
     }
@@ -19,32 +24,25 @@ const Page = () => {
             <article>
                 <section>
                     <div>
-                        <h5>{localStorage.getItem('plan')} ({localStorage.getItem('subscription')})</h5>
+                        <h5>{form.plan} ({form.period})</h5>
                         <Link href="../step3">change</Link>
                     </div>
                     <div>
-                        <b>${localStorage.getItem('plan_price')}/mo</b>
+                        <b>${plansMap.get(form.plan)}/mo</b>
                     </div>
                 </section>
                 <section>
-                    <div>
-                        <p>
-                            Online Service
-                        </p>
-                        <span>+$1/mo</span>
-                    </div>
-                    <div>
-                        <p>
-                            Larger Storage
-                        </p>
-                        <span>+$2/mo</span>
-                    </div>
-                    <div>
-                        <p>
-                            Larger Storage
-                        </p>
-                        <span>+$2/mo</span>
-                    </div>
+                    {
+                        addOns.map((key) => (
+                            <div key={key}>
+                                <p>
+                                    {key}
+                                </p>
+                                <span>+${addonsMap.get(key)}/mo</span>
+                            </div>
+                            )
+                        )
+                    }
                 </section>
             </article>
             <article>
@@ -52,7 +50,7 @@ const Page = () => {
                     Total (per month)
                 </p>
                 <span>
-                    +$12/mo
+                    +${total}/mo
                 </span>
             </article>
             <article>
@@ -63,4 +61,3 @@ const Page = () => {
     );
 };
 
-export default Page;
