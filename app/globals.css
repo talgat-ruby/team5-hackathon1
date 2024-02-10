@@ -1,0 +1,14 @@
+:root {
+    --font-size-heading: 32px;
+    --font-size-body-l: 16px;
+    --font-size-body-m: 14px;
+    --font-size-body-s: 12px;
+    --aside-color-bg: #6259FF;
+    --aside-color-active: #87CEEB;
+    --paragraph-color: #808080;
+    --aside-color-text: #FFFFFF;
+    --primary-color-text: 6F8FAF;
+}
+body {
+    font-family: 'Ubuntu', sans-serif;
+}
