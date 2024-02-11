@@ -9,6 +9,7 @@ export default function Step4() {
     const addOns = Object.keys(form.addOns).filter(key => form.addOns[key]);
     const total = addOns.reduce((total, addOn) => total + (addonsMap.get(addOn) || 0), 0) + (plansMap.get(form.plan) || 0);
     const handleClick = () => {
+
         redirect('/confirm');
     }
     return (

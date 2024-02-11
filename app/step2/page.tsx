@@ -3,20 +3,22 @@ import Link from "next/link";
 import React, {useState} from "react";
 import {redirect} from "next/navigation";
 import {periodType, planType, useFormStore} from "@/store/zustand";
-import {addons} from "@/lib/data";
+import step2Css from './step2.module.css';
 
 const plans = new Map([['arcade', 9], ['advanced', 12], ['pro', 15]]);
 
 export default function Step2() {
     const form = useFormStore((state) => state.form);
     const setForm = useFormStore((state) => state.setForm);
+    const [currentPlan, setCurrentPlan] = useState(form.plan);
+    const [currentPeriod, setCurrentPeriod] = useState(form.period);
     console.log(form, 'step2');
 
     const handleSubmit = (formData: FormData) => {
        setForm({
             ...form,
-            plan: String(formData.get('plan')) as planType,
-            period: String(formData.get('subscription')) as periodType
+            plan: currentPlan as planType,
+            period: currentPeriod as periodType
         });
        redirect('/step3');
     }
@@ -33,7 +35,7 @@ export default function Step2() {
             </hgroup>
             <form action={handleSubmit} className='flex flex-col gap-y-6'>
                 <fieldset id='plan'>
-                    <label htmlFor='arcade'>
+                    <label htmlFor='arcade' className='flex'>
                         Arcade
                     </label>
                     <input
@@ -41,6 +43,8 @@ export default function Step2() {
                         id="arcade"
                         name='plan'
                         value='arcade'
+                        checked={(currentPlan === 'arcade') || undefined}
+                        onChange={(e) => setCurrentPlan(e.target.value as planType)}
                     />
                     <label htmlFor='advanced'>
                         Advanced
@@ -50,6 +54,8 @@ export default function Step2() {
                         id="advanced"
                         name='plan'
                         value='advanced'
+                        checked={(currentPlan === 'advanced') || undefined}
+                        onChange={(e) => setCurrentPlan(e.target.value as planType)}
 
                     />
                     <label htmlFor='pro'>
@@ -60,18 +66,34 @@ export default function Step2() {
                         id="pro"
                         name='plan'
                         value='pro'
+                        checked={(currentPlan === 'pro') || undefined}
+                        onChange={(e) => setCurrentPlan(e.target.value as planType)}
 
                     />
                 </fieldset>
                 <fieldset id='subscription'>
-                    <label htmlFor='monthly'>
+                    <label htmlFor='monthly' >
                         Monthly
                     </label>
-                    <input type='radio' id='monthly' value='monthly' name='subscription'/>
+                    <input
+                        type='radio'
+                        id='monthly'
+                        value='monthly'
+                        name='subscription'
+                        checked={(currentPeriod === 'monthly') || undefined}
+                        onChange={(e) => setCurrentPeriod(e.target.value as periodType)}
+                    />
                     <label htmlFor='yearly'>
                         Yearly
                     </label>
-                    <input type='radio' id='yearly' value='yearly' name='subscription'/>
+                    <input
+                        type='radio'
+                        id='yearly'
+                        value='yearly'
+                        name='subscription'
+                        checked={(currentPeriod === 'yearly') || undefined}
+                        onChange={(e) => setCurrentPeriod(e.target.value as periodType)}
+                    />
                 </fieldset>
                 <section>
                     <Link href='../step1'>GO Back</Link>
