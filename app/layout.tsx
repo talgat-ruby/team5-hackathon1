@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import {redirect, usePathname} from "next/navigation";
-import Link from "next/link";
+import {useRouter} from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,6 +15,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <body className={'flex m-4'.concat(' ', inter.className)}>
