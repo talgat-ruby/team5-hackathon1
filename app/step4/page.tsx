@@ -1,18 +1,17 @@
 'use client'
 import Link from "next/link";
 import {useFormStore} from "@/store/zustand";
-import {addonsMap, plansMap, routePaths} from "@/lib/data";
+import {addonsMap, plansMap, routePaths, subscriptionType, subscriptionTypeLong} from "@/lib/data";
 import React from "react";
 import Text from "@/lib/components/Text/Text";
 import axios from "axios";
-import {redirect} from "next/navigation";
 import { useRouter } from 'next/navigation'
 
 export default function Step4() {
     const form = useFormStore((state) => state.form);
     const setError = useFormStore(state => state.setError);
     const addOns = Object.keys(form.addOns).filter(key => form.addOns[key]);
-    const total = addOns.reduce((total, addOn) => total + (addonsMap.get(addOn) || 0), 0) + (plansMap.get(form.plan) || 0);
+    const total = addOns.reduce((total, addOn) => total + (addonsMap.get(addOn)?.[form.period] || 0), 0) + (plansMap.get(form.plan)?.[form.period] || 0);
     console.log(form, 'step4')
     const router = useRouter()
     const handleSubmit = async (e) => {
@@ -44,7 +43,7 @@ export default function Step4() {
                             <Link href="../step3">change</Link>
                         </div>
                         <div>
-                            <b>${plansMap.get(form.plan)}/mo</b>
+                            <b>${plansMap.get(form.plan)?.[form.period]}/{subscriptionType[form.period]}</b>
                         </div>
                     </section>
                     <section>
@@ -54,7 +53,7 @@ export default function Step4() {
                                     <p>
                                         {key}
                                     </p>
-                                    <span>+${addonsMap.get(key)}/mo</span>
+                                    <span>+${addonsMap.get(key)?.[form.period]}/{subscriptionType[form.period]}</span>
                                 </div>
                                 )
                             )
@@ -63,10 +62,10 @@ export default function Step4() {
                 </article>
                 <article>
                     <p>
-                        Total (per month)
+                        Total (per {subscriptionTypeLong[form.period]})
                     </p>
                     <span>
-                        +${total}/mo
+                        +${total}/{subscriptionType[form.period]}
                     </span>
                 </article>
             </section>

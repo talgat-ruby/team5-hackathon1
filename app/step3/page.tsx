@@ -2,7 +2,7 @@
 import React, {useRef, useState} from "react";
 import {useFormStore} from "@/store/zustand";
 import Navbar from "@/lib/components/Navbar/Navbar";
-import {routePaths} from "@/lib/data";
+import {addonsMap, plansMap, routePaths, subscriptionType} from "@/lib/data";
 import Text from "@/lib/components/Text/Text";
 
 export default function Step3() {
@@ -14,7 +14,6 @@ export default function Step3() {
         customizableProfile: form.addOns.customizableProfile
     })
     const formRef = useRef<HTMLFormElement | null>(null);
-    console.log(form, 'step3');
 
 
     const handleSubmit = (formData : FormData) => {
@@ -40,7 +39,7 @@ export default function Step3() {
                                 <p>Access to multiplayer games</p>
                             </hgroup>
                             <span>
-                                +$1/mo
+                                +${addonsMap.get('onlineService')?.[form.period]}/{subscriptionType[form.period]}
                             </span>
                             <input
                                 type='checkbox'
@@ -63,7 +62,7 @@ export default function Step3() {
                                 <p>Extra 1TB of cloud save</p>
                             </hgroup>
                             <span>
-                                +$2/mo
+                                +${addonsMap.get('largerStorage')?.[form.period]}/{subscriptionType[form.period]}
                             </span>
                             <input
                                 type='checkbox'
@@ -86,7 +85,7 @@ export default function Step3() {
                                 <p>Custom theme on your profile</p>
                             </hgroup>
                             <span>
-                                +$2/mo
+                                +${addonsMap.get('customizableProfile')?.[form.period]}/{subscriptionType[form.period]}
                             </span>
                             <input
                                 type='checkbox'

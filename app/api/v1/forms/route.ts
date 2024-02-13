@@ -14,6 +14,9 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(res.status);
     }
     catch (e) {
-        return NextResponse.json(e?.response.data, {status: 400})
+        if (e instanceof  AxiosError) {
+            return NextResponse.json((e.response.data || undefined), {status: 400})
+        }
+        console.log(e);
     }
 }

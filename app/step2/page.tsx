@@ -1,6 +1,5 @@
 'use client'
 import React, {useState} from "react";
-import {redirect} from "next/navigation";
 import {periodType, planType, useFormStore} from "@/store/zustand";
 import {routePaths} from "@/lib/data";
 import Navbar from "@/lib/components/Navbar/Navbar";

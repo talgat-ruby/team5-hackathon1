@@ -1,5 +1,27 @@
-export const plansMap = new Map([['arcade', 9], ['advanced', 12], ['pro', 15]]);
-export const addonsMap = new Map([['onlineService', 1], ['largerStorage', 2], ['customizableProfile', 2]]);
+export type subscription = {
+    'monthly': number,
+    'yearly': number
+};
+export const plansMap:Map<string, subscription> = new Map([
+    ['arcade', {'monthly': 9, 'yearly': 90}],
+    ['advanced', {'monthly': 12, 'yearly': 120}],
+    ['pro', {'monthly': 15, 'yearly': 150}]
+]);
+export const addonsMap:Map<string, subscription> = new Map([
+    ['onlineService', {'monthly': 1, 'yearly': 10}],
+    ['largerStorage', {'monthly': 2, 'yearly': 20}],
+    ['customizableProfile', {'monthly': 2, 'yearly': 20}]
+]);
+
+export const subscriptionType = {
+    monthly: 'mo',
+    yearly: 'yr'
+}
+export const subscriptionTypeLong = {
+    monthly: 'month',
+    yearly: 'year'
+}
+
 export enum AppRoutes {
     STEP1 = 'step1',
     STEP2 = 'step2',
