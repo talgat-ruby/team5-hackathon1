@@ -22,6 +22,7 @@ export default function Step4() {
                     'Content-Type': 'application/json',
                 }
             })
+            setError({});
             router.push(routePaths.step5)
         } catch (e) {
             setError(e?.response.data.error)
